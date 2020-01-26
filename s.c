@@ -33,7 +33,7 @@ int main() {
 
 	int sockfd; 
 	char buffer[MAXLINE]; 
-	char *hello = "Hello from server"; 
+	//char *hello = "Hello server has handled the request"; 
 	struct sockaddr_in servaddr, cliaddr; 
 	
 	// Creating socket file descriptor 
@@ -86,32 +86,36 @@ int main() {
 		n = recvfrom(sockfd, (char *)buffer, MAXLINE, 
 					MSG_WAITALL, ( struct sockaddr *) &cliaddr, 
 					&len); 
-		buffer[n] = '\0'; 
+		buffer[n] = '\0';
+		char *response = "This is the response from server";  
 		printf("Client : %s\n", buffer); 
-		sendto(sockfd, (const char *)hello, strlen(hello), 
+		sendto(sockfd, (const char *)response, strlen(response), 
 			MSG_CONFIRM, (const struct sockaddr *) &cliaddr, 
 				len); 
-		printf("Hello message sent.\n"); 
+		printf("server has handled the request.\n"); 
 
 	}
     int err;
+    int id;
     for (int j=0; j< *c; j++)
     {
+    	if (id = pids[j])
+    	{
+	    	printf("Process with id %d is running \n", id);	
+		
+			int k=0;
+		    //while(k < 2)
+		    {
+		        err = pthread_create(&(tid[k]), NULL, &handleResponse, NULL);
+		        if (err != 0)
+		            printf("\ncan't create thread :[%s]\n", strerror(err));
+		        else
+		            printf("Thread within process created successfully\n");
 
-    	printf("Process with id %d is running \n", pids[j]);	
-	
-		int k=0;
-	    //while(k < 2)
-	    {
-	        err = pthread_create(&(tid[k]), NULL, &handleResponse, NULL);
-	        if (err != 0)
-	            printf("\ncan't create thread :[%s]\n", strerror(err));
-	        else
-	            printf("Thread within process created successfully\n");
-
-	        k++;
-	    }
-	    sleep(1);
+		        k++;
+		    }
+		    sleep(2);
+		}
 	}
 
 /*	int len, n; 
@@ -126,6 +130,5 @@ int main() {
 		MSG_CONFIRM, (const struct sockaddr *) &cliaddr, 
 			len); 
 	printf("Hello message sent.\n"); */
-	
 	return 0; 
 } 
