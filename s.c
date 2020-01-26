@@ -7,6 +7,8 @@
 #include <sys/socket.h> 
 #include <arpa/inet.h> 
 #include <netinet/in.h> 
+#include<pthread.h>
+
 
 #define PORT	 8080 
 #define MAXLINE 1024 
@@ -59,6 +61,7 @@ int main() {
 	
     pid_t pids[*c];
 	int i;
+	pthread_t tid[2];
     for ( i= 0; i < *c; i++)
     {
 
@@ -73,12 +76,43 @@ int main() {
 	  }
     	//printf("total number of processes: %d\n", i);
     }
+	void* handleResponse()
+	{
+		//sleep(5000);
+		printf("Thread is processing the request");
+		int len, n; 
+		len = sizeof(cliaddr); //len is value/resuslt 
+
+		n = recvfrom(sockfd, (char *)buffer, MAXLINE, 
+					MSG_WAITALL, ( struct sockaddr *) &cliaddr, 
+					&len); 
+		buffer[n] = '\0'; 
+		printf("Client : %s\n", buffer); 
+		sendto(sockfd, (const char *)hello, strlen(hello), 
+			MSG_CONFIRM, (const struct sockaddr *) &cliaddr, 
+				len); 
+		printf("Hello message sent.\n"); 
+
+	}
+    int err;
     for (int j=0; j< *c; j++)
     {
-    	printf("pids %d\n", pids[j]);
+    	printf("pids %d\n", pids[j]);	
 	}
+		int k=0;
+	    //while(k < 2)
+	    {
+	        err = pthread_create(&(tid[k]), NULL, &handleResponse, NULL);
+	        if (err != 0)
+	            printf("\ncan't create thread :[%s]", strerror(err));
+	        else
+	            printf("\n Thread created successfully\n");
 
-	int len, n; 
+	        k++;
+	    }
+	    sleep(5);
+
+/*	int len, n; 
 	len = sizeof(cliaddr); //len is value/resuslt 
 
 	n = recvfrom(sockfd, (char *)buffer, MAXLINE, 
@@ -89,7 +123,7 @@ int main() {
 	sendto(sockfd, (const char *)hello, strlen(hello), 
 		MSG_CONFIRM, (const struct sockaddr *) &cliaddr, 
 			len); 
-	printf("Hello message sent.\n"); 
+	printf("Hello message sent.\n"); */
 	
 	return 0; 
 } 
