@@ -1,0 +1,2 @@
+# UDP_process_scheduler
+The purpose of this project is to implement UPD in such a way that there are multile processes created depending upon the config file value. those processes will handle the request from the clients in a round robin fashion. 
