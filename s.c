@@ -26,7 +26,7 @@ int main() {
         // reads text until newline is encountered
         fscanf(fptr, "%d", c);
 
-        printf("%d\n", *c);
+        printf("Total number of processes to be created as read from the config file: %d\n", *c);
         fclose(fptr);
     
     // read file code ends
@@ -79,7 +79,7 @@ int main() {
 	void* handleResponse()
 	{
 		//sleep(5000);
-		printf("Thread is processing the request");
+		//printf("Thread is processing the request");
 		int len, n; 
 		len = sizeof(cliaddr); //len is value/resuslt 
 
@@ -97,20 +97,22 @@ int main() {
     int err;
     for (int j=0; j< *c; j++)
     {
-    	printf("pids %d\n", pids[j]);	
-	}
+
+    	printf("Process with id %d is running \n", pids[j]);	
+	
 		int k=0;
 	    //while(k < 2)
 	    {
 	        err = pthread_create(&(tid[k]), NULL, &handleResponse, NULL);
 	        if (err != 0)
-	            printf("\ncan't create thread :[%s]", strerror(err));
+	            printf("\ncan't create thread :[%s]\n", strerror(err));
 	        else
-	            printf("\n Thread created successfully\n");
+	            printf("Thread within process created successfully\n");
 
 	        k++;
 	    }
-	    sleep(5);
+	    sleep(1);
+	}
 
 /*	int len, n; 
 	len = sizeof(cliaddr); //len is value/resuslt 
