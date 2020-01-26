@@ -40,7 +40,7 @@ int main() {
 	sendto(sockfd, (const char *)hello, strlen(hello), 
 		MSG_CONFIRM, (const struct sockaddr *) &servaddr, 
 			sizeof(servaddr)); 
-	printf("Cleint's request has been sent.\n"); 
+	printf("Client's request has been sent.\n"); 
 		
 	n = recvfrom(sockfd, (char *)buffer, MAXLINE, 
 				MSG_WAITALL, (struct sockaddr *) &servaddr, 

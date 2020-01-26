@@ -76,8 +76,10 @@ int main() {
 	  }
     	//printf("total number of processes: %d\n", i);
     }
-	void* handleResponse()
+	void* handleResponse(void* arg)
 	{
+		int id = *((int *) arg);
+		    
 		//sleep(5000);
 		//printf("Thread is processing the request");
 		int len, n; 
@@ -92,21 +94,27 @@ int main() {
 		sendto(sockfd, (const char *)response, strlen(response), 
 			MSG_CONFIRM, (const struct sockaddr *) &cliaddr, 
 				len); 
-		printf("server has handled the request.\n"); 
+		printf("Server with process id %d has handled the request.\n", id); 
+		free(arg);
+		sleep(10000);
 
 	}
     int err;
     int id;
     for (int j=0; j< *c; j++)
     {
+    	int *arg = malloc(sizeof(*arg));
+    	 
+
     	if (id = pids[j])
     	{
+    		*arg = id;
 	    	printf("Process with id %d is running \n", id);	
 		
 			int k=0;
 		    //while(k < 2)
 		    {
-		        err = pthread_create(&(tid[k]), NULL, &handleResponse, NULL);
+		        err = pthread_create(&(tid[k]), NULL, &handleResponse, arg);
 		        if (err != 0)
 		            printf("\ncan't create thread :[%s]\n", strerror(err));
 		        else
